@@ -1,0 +1,3 @@
+<view class="container" style="{{` width : "100vw"; height :  100vh`}}">
+  <canvas id="canvas" class="canvas" style="width : 90% ; height : 90%; border-radius : 30rpx" onTouchStart="onTouchStart" onTouchEnd="onTouchEnd"></canvas>
+</view>

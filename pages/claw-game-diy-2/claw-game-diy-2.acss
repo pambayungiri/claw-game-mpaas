@@ -1,0 +1,19 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+
+.container {
+  background-color: #4442c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas{
+  background-color: rgb(252, 235, 204);
+}

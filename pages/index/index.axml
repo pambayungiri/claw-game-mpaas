@@ -1,0 +1,8 @@
+
+<view>
+  <button size="default" type="primary" onTap="onClawGame">claw game</button>
+  <button size="default" type="primary" onTap="onClawGameDiy">claw game diy</button>
+  <button size="default" type="primary" onTap="onClawGameDiy1">claw game diy 1</button>
+  <button size="default" type="primary" onTap="onClawGameDiy2">claw game diy 2</button>
+  <button size="default" type="primary" onTap="requestAF">request animation frame</button>
+</view>

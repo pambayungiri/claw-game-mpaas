@@ -1,0 +1,14 @@
+{
+  "subPackageBuildType": "shared",
+  "pages": [
+    "pages/index/index",
+    "pages/claw-game/claw-game",
+    "pages/claw-game-diy/claw-game-diy",
+    "pages/claw-game-diy-1/claw-game-diy-1",
+    "pages/claw-game-diy-2/claw-game-diy-2",
+    "pages/try-request-animation-frame/try-request-animation-frame"
+  ],
+  "window": {
+    "defaultTitle": "My App"
+  }
+}
