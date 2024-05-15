@@ -2,14 +2,13 @@ Page({
   data: {
     radius : 30,
     circles : [],
-    clickPos : {},
     buttonLeftStatus : false,
     buttonLeftImage : 3,
     buttonRightStatus : false,
     buttonRightImage : 5,
     buttonGrabStatus : false,
     buttonGrabImage : 1, 
-    clawPosX : 45,
+    clawPosX : 50,
     clawPosY : 45,
     moveDirection : "",
     clawRotate : 0,
@@ -25,15 +24,12 @@ Page({
     SelectorQuery.select("#canvas")
     .boundingClientRect()
     .exec(ret => {
-      
-  
       this.setData({
         width : ret[0].width,
         height : ret[0].height,
         top : ret[0].top,
         left : ret[0].left
       })
-   
       
       for (let i = 0; i < 15 ; i++) {  
         let radius = 30
@@ -43,8 +39,8 @@ Page({
         let y;
         let isOverlapping = false;
         do {
-            x = radius*2 + Math.random() * (this.data.width - radius * 2);
-            y = radius*2 + Math.random() * (this.data.height - radius * 2);
+            x = radius + Math.random() * (this.data.width - radius * 2);
+            y = radius + Math.random() * (this.data.height - radius * 2);
             isOverlapping = false;
             for (let otherCircle of this.data.circles) {
               if (this.distance(x, y, otherCircle.x, otherCircle.y) < radius + otherCircle.r) {
@@ -67,30 +63,32 @@ Page({
       this.interval = setInterval(this.animate.bind(this), 17);
     })
   },
-  onCanvasTap(e) {
-    this.setData({clickPos : e.detail})
-  },
-  onCanvasReady() {
-
-  },
   clawDraw(){
     let poleY = this.data.height / 25
     let poleWidth = this.data.width / 46.8
     let poleMachineWidth = this.data.width / 28.08
-    this.setData({poleMachineWidth : poleMachineWidth})
-    let clawRealHeight = this.data.height 
-    let clawHeight = 0 + this.data.clawRealHeight
     let clawPosXPerc = this.data.clawPosX / 100 * (this.data.width - this.data.width / 4) 
     let clawPosY = this.data.clawPosY
+    let centerX = clawPosXPerc + this.data.width / 8;
+    let centerY = poleY + poleWidth / 2 + poleMachineWidth / 2 + clawPosY;
+    let xClaw = clawPosXPerc + this.data.width / 8
+    let yClaw = poleY + poleWidth / 2 + poleMachineWidth / 2 + clawPosY - poleMachineWidth
+    this.setData({
+      clawPosXTrue: xClaw,
+      clawPosYTrue: yClaw + poleMachineWidth,
+      poleMachineWidth : poleMachineWidth
+    })
   
     // this.c.drawImage(`../../images/claw-svg.svg`, 100, 100, 125, 125);
 
+    //grey pole
     this.c.beginPath();
     this.c.setFillStyle('#a2a2a3')
     this.c.rect(0, poleY, this.data.width, poleWidth); 
     this.c.fill();
     this.c.closePath()
     
+    //red thingy in the grey pole
     this.c.beginPath();
     this.c.setFillStyle('#ef304b') 
     this.c.moveTo(clawPosXPerc  , poleY + poleWidth / 2 - poleMachineWidth / 2 )
@@ -100,21 +98,14 @@ Page({
     this.c.arc(clawPosXPerc  ,  poleY + poleWidth / 2, poleMachineWidth / 2,  Math.PI / 2,0 - Math.PI / 2)
     this.c.fill()
 
+    //rope
     this.c.beginPath();
     this.c.setFillStyle('#a2a2a3')
     this.c.rect(clawPosXPerc + this.data.width / 8 - poleWidth / 2, poleY + poleWidth / 2 + poleMachineWidth / 2 , poleWidth, clawPosY ); 
     this.c.fill();
     this.c.closePath()
 
-    let centerX = clawPosXPerc + this.data.width / 8;
-    let centerY = poleY + poleWidth / 2 + poleMachineWidth / 2 + clawPosY;
-    let xClaw = clawPosXPerc + this.data.width / 8
-    let yClaw = poleY + poleWidth / 2 + poleMachineWidth / 2 + clawPosY - poleMachineWidth
-    this.setData({
-      clawPosXTrue: xClaw,
-      clawPosYTrue: yClaw + poleMachineWidth
-    })
-
+    //claw right
     this.c.save();
     this.c.translate(centerX, centerY);
     this.c.rotate(-1 * this.data.clawRotate)
@@ -133,6 +124,7 @@ Page({
 
     this.c.restore()
 
+    //claw left
     this.c.save();
     this.c.translate(centerX, centerY);
     this.c.rotate(this.data.clawRotate)
@@ -151,6 +143,7 @@ Page({
 
     this.c.restore()
 
+    //blue thing on top of the circle
     this.c.beginPath()
     this.c.setFillStyle("#4442c0")
     this.c.rect(xClaw - 9, yClaw + 6, 18, -12)
@@ -163,17 +156,12 @@ Page({
     this.c.fill()
     this.c.closePath()
     
+    //red circle
     this.c.beginPath();
     this.c.setFillStyle('#ef304b')
     this.c.arc( xClaw, yClaw + poleMachineWidth , poleMachineWidth , 0  , Math.PI * 2 ); 
     this.c.fill();
     this.c.closePath()
-
-    // this.c.lineTo(clawPosXPerc  , poleY + poleWidth / 2  + poleMachineWidth / 2 )
-    // this.c.arc(clawPosXPerc  ,  poleY + poleWidth / 2, poleMachineWidth / 2,  Math.PI / 2,0 - Math.PI / 2)
-    // this.c.fill()
-  },
-  box(){
 
   },
   animate() {
@@ -205,21 +193,30 @@ Page({
       this.setData({clawRotate : this.data.clawRotate - 0.02})
     } 
 
-    if (this.data.clawRotate < Math.PI / 18 && !this.data.onGrabStatus && this.data.ballCatchStatus && this.data.clawPosY >= 45) {
+    if (this.data.clawRotate < Math.PI / 18 && !this.data.onGrabStatus && this.data.ballCatchStatus && this.data.clawPosY > 45) {
       this.setData({clawPosY : this.data.clawPosY - 3})
     }
 
     if (this.data.ballCatchStatus && !this.data.onGrabStatus && this.data.clawPosY == 45 ) {
+      console.log("check");
+      if (this.data.clawPosX > 50) {
+        this.setData({clawPosX : this.data.clawPosX - 1})
+      } else {
+        this.setData({clawPosX : this.data.clawPosX + 1})
+      }
+    }
+
+    if (this.data.ballCatchStatus && !this.data.onGrabStatus && this.data.clawPosY == 45 && this.data.clawPosX == 50 ) {
       if (this.data.gachaStatus) {
-        this.setData({gachaStatus : Math.random() < 0.5})
-        console.log(this.data.gachaStatus);
+        // this.setData({gachaStatus : Math.random() < 0.1})
+        this.setData({gachaStatus : false})
       }
 
       if (this.data.gachaStatus) {
         console.log("mantap tuan");
       } else {
         this.setData({
-          clawPosX : 45,
+          clawPosX : 50,
           clawPosY : 45,
           moveDirection : "",
           clawRotate : 0,
@@ -300,26 +297,30 @@ Page({
   
     this.update = function(index) {
       this.draw();
-    
+      
       // Apply gravity
       this.dy += this.gravity;
-
-      // Boundary collision with damping
-      if (this.x + this.r + this.dx > this.data.width || this.x - this.r - this.dx< 0) {
-        this.dx = -this.dx * this.airFriction ; // Reverse and apply air friction
-        this.x = Math.max(this.r, Math.min(this.x, this.data.width - this.r)); // Keep circle within horizontal bounds
+      
+      // Limit velocity
+      const maxVelocity = 10;
+      this.dx = Math.max(-maxVelocity, Math.min(maxVelocity, this.dx));
+      this.dy = Math.max(-maxVelocity, Math.min(maxVelocity, this.dy));
+      
+      // Boundary collision with damping for the sides
+      if (this.x + this.r + this.dx > this.data.width || this.x - this.r + this.dx < 0) {
+        this.dx = -this.dx * this.airFriction;
+        this.x = Math.max(this.r, Math.min(this.x, this.data.width - this.r));
       }
-    
-      if (this.y + this.r + this.dy  > this.data.height) {
-        this.dy = -this.dy * this.groundFriction ; // Reverse and apply ground friction when hitting the bottom
+      
+      // Handle vertical boundaries
+      if (this.y + this.r + this.dy > this.data.height) {
+        this.dy = -this.dy * this.groundFriction;
         this.y = this.data.height - this.r;
-      } else if (this.y - this.r - this.dy< 0) {
-        this.dy = -this.dy * this.airFriction; // Reverse and apply air friction when hitting the top
+      } else if (this.y - this.r + this.dy < 0) {
+        this.dy = -this.dy * this.airFriction;
         this.y = this.r;
       }
-    
-  
-
+      
       // Handle collisions with other circles
       for (let j = 0; j < this.data.circles.length; j++) {
         if (j !== index) {
@@ -328,28 +329,28 @@ Page({
           const dy = other.y - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           const minDistance = this.r + other.r;
-    
-          if (distance < minDistance) {
-            const overlap = 0.5 * (minDistance - distance);
+  
+          if (distance < minDistance && distance != 0) {
+            const overlap = 0.5 * (minDistance - distance) + 0.1; // Add buffer
             const nx = dx / distance;
             const ny = dy / distance;
-    
+  
             // Resolve overlaps
-            this.x -= overlap * nx ; // Using a smaller fraction to adjust position gently
-            other.x += overlap * nx ;
-            this.y -= overlap * ny ;
-            other.y += overlap * ny ;
-    
-            // Elastic collision response with damping
+            this.x -= overlap * nx;
+            other.x += overlap * nx;
+            this.y -= overlap * ny;
+            other.y += overlap * ny;
+  
+            // Calculate relative velocity components
             const vx1 = this.dx - other.dx;
             const vy1 = this.dy - other.dy;
             const dotProduct = vx1 * nx + vy1 * ny;
-    
+  
             if (dotProduct > 0) {
               const combinedMass = this.r + other.r;
-              const coefficientOfRestitution = 0.3;
+              const coefficientOfRestitution = 0.6; // Lower coefficient
               const impulse = (2 * dotProduct / combinedMass) * coefficientOfRestitution;
-    
+  
               this.dx -= impulse * other.r * nx;
               this.dy -= impulse * other.r * ny;
               other.dx += impulse * this.r * nx;
@@ -358,12 +359,11 @@ Page({
           }
         }
       }
-
-
-   
+      
+      // Update positions
       this.x += this.dx;
       this.y += this.dy;
-    }
+    };
 
     this.catchPos = function(x, y){
       this.draw()
@@ -376,7 +376,6 @@ Page({
   },
   onGrab() {
     this.setData({ onGrabStatus :  true })
-
   },
   onTouchStart(e){
     let direction = e.currentTarget.dataset.direction 
@@ -407,11 +406,12 @@ Page({
       })
     }
   },
-  onTouchGrapStart(){
-    this.setData({buttonGrabImage : 2})
-  },
-  onTouchGrapEnd(){
-    this.setData({buttonGrabImage : 1})
+  onTouchGrap(){
+    if (this.data.buttonGrabImage == 2) {
+      this.setData({buttonGrabImage : 1})
+    } else {
+      this.setData({buttonGrabImage : 2})
+    }
   },
   randomIntFromRange(min, max) {
     return Math.floor(Math.random() * ( max - min + 1)) + min

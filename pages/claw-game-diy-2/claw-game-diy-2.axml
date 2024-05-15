@@ -1,16 +1,14 @@
 <view class="container" style="width : 100vw; height :  100vh; display : flex ; flex-direction : column">
-  <canvas id="canvas" class="canvas" style="width : 90% ; height : 80%; border-radius : 30rpx"  onReady="onCanvasReady" onTap="onCanvasTap"></canvas>
+  <canvas id="canvas" class="canvas" style="width : 90% ; height : 80%; border-radius : 30rpx"></canvas>
   <view style="display : flex; padding : 20 ">
     <view onTouchStart="onTouchStart" onTouchEnd="onTouchEnd" data-direction="left">
-      <image mode="widthFix" src="{{`../../images/${buttonLeftImage}-removebg-preview.png`}}" style="width : 75; height : 75" />
+      <image mode="widthFix" src="{{`../../icons/${buttonLeftImage}.svg`}}" style="width : 75; height : 75" />
     </view>
-    <view style="margin : 0 30px" onTouchStart="onTouchGrapStart" onTouchEnd="onTouchGrapEnd" onTap="onGrab">
-      <image mode="widthFix"  src="{{`../../images/${buttonGrabImage}-removebg-preview.png`}}" style="width : 75; height : 75" />
+    <view style="margin : 0 30px" onTouchStart="onTouchGrap" onTouchEnd="onTouchGrap" data-direction="grab" onTap="onGrab">
+      <image mode="widthFix"  src="{{`../../icons/${buttonGrabImage}.svg`}}" style="width : 75; height : 75" />
     </view>
     <view  onTouchStart="onTouchStart" onTouchEnd="onTouchEnd" data-direction="right">
-      <image mode="widthFix"  src="{{`../../images/${buttonRightImage}-removebg-preview.png`}}" style="width : 75; height : 75" />
-    </view>
-
-    
+      <image mode="widthFix"  src="{{`../../icons/${buttonRightImage}.svg`}}" style="width : 75; height : 75" />
+    </view> 
   </view>
 <view>
