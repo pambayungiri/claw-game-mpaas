@@ -1,0 +1,89 @@
+{
+  "vouchersId": 1,
+  "vouchers": [
+    {
+      "id": 1,
+      "voucher_code": "DISKON20JIWA",
+      "brand": "Janji Jiwa",
+      "discount": "Diskon 20%",
+      "minimum_purchase": "15000",
+      "valid_from": "2024-05-01",
+      "valid_until": "2024-05-31",
+      "terms_conditions": "Berlaku untuk semua minuman. Tidak dapat digabungkan dengan promosi lain.",
+      "image_url": "1-logo",
+      "description": "Dapatkan diskon 20% untuk semua minuman di Janji Jiwa."
+    },
+    {
+      "id": 2,
+      "voucher_code": "KENANGANFREE50",
+      "brand": "Kopi Kenangan",
+      "discount": "Gratis Ongkir",
+      "minimum_purchase": "50000",
+      "valid_from": "2024-05-01",
+      "valid_until": "2024-06-01",
+      "terms_conditions": "Hanya berlaku untuk pengiriman standar. Pembelian minimum diperlukan.",
+      "image_url": "2-logo",
+      "description": "Nikmati gratis ongkir untuk pembelian di atas Rp50.000 di Kopi Kenangan."
+    },
+    {
+      "id": 5,
+      "voucher_code": "CHATIME10K",
+      "brand": "Chatime",
+      "discount": "Diskon Rp10.000",
+      "minimum_purchase": "100000",
+      "valid_from": "2024-06-01",
+      "valid_until": "2024-06-30",
+      "terms_conditions": "Berlaku hanya untuk menu musim panas. Satu kali penggunaan per pelanggan.",
+      "image_url": "5-logo",
+      "description": "Hemat Rp10.000 untuk minuman musim panas favorit Anda di Chatime."
+    },
+    {
+      "id": 6,
+      "voucher_code": "JCONEWUSER15",
+      "brand": "J.CO",
+      "discount": "Diskon 15%",
+      "minimum_purchase": "Tanpa minimum",
+      "valid_from": "2024-05-01",
+      "valid_until": "2024-12-31",
+      "terms_conditions": "Hanya untuk pengguna baru. Satu kali penggunaan.",
+      "image_url": "6-logo",
+      "description": "Pengguna baru dapat diskon 15% di J.CO tanpa minimum pembelian."
+    },
+    {
+      "id": 3,
+      "voucher_code": "GARDOE5OFF",
+      "brand": "Gardoe",
+      "discount": "Diskon 5%",
+      "minimum_purchase": "30000",
+      "valid_from": "2024-05-01",
+      "valid_until": "2024-05-31",
+      "terms_conditions": "Berlaku untuk item yang sudah diskon.",
+      "image_url": "3-logo",
+      "description": "Dapatkan tambahan diskon 5% untuk item yang sudah diskon di Gardoe."
+    },
+    {
+      "id": 7,
+      "voucher_code": "HOKBENBOGO50",
+      "brand": "HokBen",
+      "discount": "Beli 1 Gratis 1 dengan diskon 50%",
+      "minimum_purchase": "Tanpa minimum",
+      "valid_from": "2024-05-15",
+      "valid_until": "2024-06-15",
+      "terms_conditions": "Item kedua harus bernilai sama atau lebih rendah.",
+      "image_url": "7-logo",
+      "description": "Beli satu dan dapatkan yang kedua dengan diskon 50% di HokBen."
+    },
+    {
+      "id": 4,
+      "voucher_code": "MIXUE20SPRING",
+      "brand": "MIXUE",
+      "discount": "Diskon 20%",
+      "minimum_purchase": "75000",
+      "valid_from": "2024-05-01",
+      "valid_until": "2024-05-31",
+      "terms_conditions": "Tidak berlaku untuk item clearance.",
+      "image_url": "4-logo",
+      "description": "Nikmati diskon 20% untuk semua pembelian di MIXUE selama musim semi."
+    }
+  ]
+}

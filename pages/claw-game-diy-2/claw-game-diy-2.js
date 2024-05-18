@@ -1,3 +1,5 @@
+import vouchers from "./voucherList.json";
+
 Page({
   data: {
     radius : 30,
@@ -15,9 +17,13 @@ Page({
     onGrabStatus : false,
     ballCatchIndex : null,
     ballCatchStatus: false,
-    gachaStatus : true
+    gachaStatus : true,
+    modalStatus : false,
+    firstLoadFlag : false,
+    selectedVoucher : {}
   },
   onLoad() { 
+    this.setData({vouchers : vouchers.vouchers})
     this.c = my.createCanvasContext('canvas')
     
     const SelectorQuery = my.createSelectorQuery()
@@ -31,37 +37,43 @@ Page({
         left : ret[0].left
       })
       
-      for (let i = 0; i < 15 ; i++) {  
-        let radius = 30
-        let dx = (Math.random() - 0.5 ) * 16
-        let dy = (Math.random() - 0.5) * 16 
-        let x;
-        let y;
-        let isOverlapping = false;
-        do {
-            x = radius + Math.random() * (this.data.width - radius * 2);
-            y = radius + Math.random() * (this.data.height - radius * 2);
-            isOverlapping = false;
-            for (let otherCircle of this.data.circles) {
-              if (this.distance(x, y, otherCircle.x, otherCircle.y) < radius + otherCircle.r) {
-                isOverlapping = true;
-                break;
-              }
-            }
-          } while (isOverlapping);
-  
-        // let x = radius + dx + (Math.random() * (this.data.width  - radius  * 2))
-        // let y = radius + dy + (Math.random() * (this.data.height - radius * 2))
-        let r = Math.round(Math.random() * 255 | 0);
-        let g = Math.round(Math.random() * 255 | 0);
-        let b = Math.round(Math.random() * 255 | 0);
-        let rgbVal = `rgb(${r}, ${g}, ${b})`
-        let logo = this.randomIntFromRange(1, 7) + "-logo"
-        
-        this.data.circles.push(new this.Circle(x, y, dx, dy, radius, this.c, this.data, rgbVal, logo))
-      }
+      this.initialBallsPos()
       this.interval = setInterval(this.animate.bind(this), 17);
     })
+
+  },
+  initialBallsPos(){
+    for (let i = 0; i < 15 ; i++) {  
+      let radius = 30
+      let dx = (Math.random() - 0.5 ) * 16
+      let dy = (Math.random() - 0.5) * 16 
+      let x;
+      let y;
+      let isOverlapping = false;
+      do {
+          x = radius + Math.random() * (this.data.width - radius * 2);
+          y = radius + Math.random() * (this.data.height - radius * 2);
+          isOverlapping = false;
+          for (let otherCircle of this.data.circles) {
+            if (this.distance(x, y, otherCircle.x, otherCircle.y) < radius + otherCircle.r) {
+              isOverlapping = true;
+              break;
+            }
+          }
+        } while (isOverlapping);
+
+      // let x = radius + dx + (Math.random() * (this.data.width  - radius  * 2))
+      // let y = radius + dy + (Math.random() * (this.data.height - radius * 2))
+      let r = Math.round(Math.random() * 255 | 0);
+      let g = Math.round(Math.random() * 255 | 0);
+      let b = Math.round(Math.random() * 255 | 0);
+      let rgbVal = `rgb(${r}, ${g}, ${b})`
+      let id = this.randomIntFromRange(1, 7)
+      let logo = id + "-logo"
+      
+      this.data.circles.push(new this.Circle(x, y, dx, dy, radius, this.c, this.data, rgbVal, logo, id))
+    }
+    
   },
   clawDraw(){
     let poleY = this.data.height / 25
@@ -186,7 +198,7 @@ Page({
     } 
 
     if (this.data.clawRotate >= Math.PI / 6 && this.data.onGrabStatus && !this.data.ballCatchStatus) {
-      this.setData({clawPosY : this.data.clawPosY + 3})
+      this.setData({clawPosY : this.data.clawPosY + 6})
     }
 
     if (!this.data.onGrabStatus && this.data.clawRotate > Math.PI / 18) {
@@ -194,27 +206,28 @@ Page({
     } 
 
     if (this.data.clawRotate < Math.PI / 18 && !this.data.onGrabStatus && this.data.ballCatchStatus && this.data.clawPosY > 45) {
-      this.setData({clawPosY : this.data.clawPosY - 3})
+      this.setData({clawPosY : this.data.clawPosY - 6})
     }
 
     if (this.data.ballCatchStatus && !this.data.onGrabStatus && this.data.clawPosY == 45 ) {
-      console.log("check");
       if (this.data.clawPosX > 50) {
         this.setData({clawPosX : this.data.clawPosX - 1})
-      } else {
+      } else if (this.data.clawPosX < 50) {
         this.setData({clawPosX : this.data.clawPosX + 1})
       }
     }
-
     if (this.data.ballCatchStatus && !this.data.onGrabStatus && this.data.clawPosY == 45 && this.data.clawPosX == 50 ) {
       if (this.data.gachaStatus) {
-        // this.setData({gachaStatus : Math.random() < 0.1})
-        this.setData({gachaStatus : false})
+        // this.setData({gachaStatus : Math.random() < 0.5})
+        this.setData({gachaStatus : true})
       }
-
       if (this.data.gachaStatus) {
-        console.log("mantap tuan");
+        my.vibrateLong()
+        this.setData({modalStatus : true})
+        this.data.circles = this.data.circles.filter((value, index) => index !== this.data.ballCatchIndex)
+        this.setData({gachaStatus : false})
       } else {
+
         this.setData({
           clawPosX : 50,
           clawPosY : 45,
@@ -223,13 +236,27 @@ Page({
           onGrabStatus : false,
           ballCatchIndex : null,
           ballCatchStatus: false,
-          gachaStatus : true
+          gachaStatus : true,
         })
       }
       
-
-
     }
+
+    my.watchShake ({
+      success : (res) => {
+        if (!this.data.firstLoadFlag) {
+          this.setData({firstLoadFlag : true})
+        }
+
+        if (!this.data.onGrabStatus) {
+          this.data.circles.length = 0
+          this.initialBallsPos()
+        }
+      },
+      fail : (err) => {
+      },
+    });
+    
     
     for (let i = 0; i < this.data.circles.length; i++) {
       if (this.data.ballCatchStatus && this.data.ballCatchIndex == i && this.data.gachaStatus) {
@@ -242,20 +269,31 @@ Page({
       } else {
         this.data.circles[i].update(i)
         let touchDistance = this.distance(this.data.circles[i].x, this.data.circles[i].y, this.data.clawPosXTrue, this.data.clawPosYTrue)
-        // console.log(touchDistance, this.data.clawPosX, this.data.clawPosY);
         if (touchDistance < this.data.circles[i].r + this.data.poleMachineWidth && !this.data.ballCatchStatus && this.data.onGrabStatus) {
-          // console.log('kena', this.data.circles[i]);
-          this.setData({
-            ballCatchIndex : i,
-            ballCatchStatus : true
-          })
+          if (this.ballCatchIndex == null) {
+            this.setData({
+              ballCatchIndex : i,
+              ballCatchStatus : true
+            })
+            this.setData({selectedVoucher : this.data.vouchers.find(voucher => voucher.id == this.data.circles[this.data.ballCatchIndex].id)})
+          }
         }
       }
     }
     this.clawDraw()
     this.c.draw()
   }, 
-  Circle(x, y, dx, dy, r, c, data, rgb, logo) {
+  onCheck(){
+    this.setData({modalStatus : true})
+  },
+  onCloseModal(){
+    // this.data.circles.length = 0
+    // this.initialBallsPos()
+    this.setData({modalStatus : false})
+
+  },
+  Circle(x, y, dx, dy, r, c, data, rgb, logo, id) {
+    this.id = id;
     this.x = x;
     this.y = y;
     this.dx = dx;

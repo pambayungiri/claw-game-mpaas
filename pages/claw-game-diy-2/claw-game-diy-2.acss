@@ -8,12 +8,38 @@
 
 
 .container {
-  background-color: #4442c0;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .canvas{
   background-color: rgb(252, 235, 204);
+}
+
+.modal {
+  background-color: wheat;
+  position: relative;
+  border-radius: 30rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  animation-name: popUp;
+  animation-duration: 1s;
+
+}
+@keyframes popUp {
+  from {
+    transform : scale(50%);
+  }
+  to {
+    transform : scale(100%);
+  }
+}
+
+
+.button:active {
+  scale: 95%;
 }

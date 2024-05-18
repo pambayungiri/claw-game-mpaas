@@ -1,4 +1,4 @@
-<view class="container" style="width : 100vw; height :  100vh; display : flex ; flex-direction : column">
+<view class="container" style="width : 100vw; height :  100vh; display : flex ; flex-direction : column;   background-color: #4442c0;">
   <canvas id="canvas" class="canvas" style="width : 90% ; height : 80%; border-radius : 30rpx"></canvas>
   <view style="display : flex; padding : 20 ">
     <view onTouchStart="onTouchStart" onTouchEnd="onTouchEnd" data-direction="left">
@@ -10,5 +10,34 @@
     <view  onTouchStart="onTouchStart" onTouchEnd="onTouchEnd" data-direction="right">
       <image mode="widthFix"  src="{{`../../icons/${buttonRightImage}.svg`}}" style="width : 75; height : 75" />
     </view> 
+  </view>
+
+  <view a:if="{{ modalStatus }}" style="width : 100% ; height : 100% ; background-color : rgba(0,0,0, 0.3); position : absolute; justify-content : center; display : flex; align-items : center" onTap="onCloseModal">
+    <image mode="widthFix" src="../../icons/confetti.gif" style="width : 100% ; position : absolute; top : 0"/>
+    <view class="modal" style="{{ `width : ${width / 1.2}; height : ${height / 2}; `}}; padding : 30rpx; top : -200rpx">
+      <image mode="widthFix" src="../../icons/banner.svg" style="width : 80%; height : 100%; position : absolute ; top : -220rpx; z-index : 1" />
+      <text style="font-size : 45rpx; color: white; z-index: 2; font-weight : 700; position : absolute ; top : -35rpx; font-family :Arial, Helvetica, sans-serif; text-shadow: 3px 2px 6px rgba(0,0,0,0.62);">SELAMAT</text>
+      <view style="padding : 30rpx;width : 100% ; height : 60% ; background-color: #755021; border-radius : 30rpx; position : relative; display : grid; place-content : center; place-items : center">
+        <image mode="widthFix" src="../../icons/lighting.svg" style="width : 100%; position : absolute; bottom : 0 ; z-index : 2 " />
+        <view style="display : flex; align-items : center; justify-content : center ; background-color : rgba(0,0,0,0.2);  border-radius : 30rpx ;z-index : 3; padding : 10rpx">
+          <image mode="widthFix" src="{{`../../images/${selectedVoucher.image_url}.png`}}" style="width : 50%;"  />
+          <view style="display : flex; flex-direction : column; margin-left : 10rpx">
+            <text style="font-size : 32rpx; color: white; z-index: 2; font-weight : 600; font-family :Arial, Helvetica, sans-serif;text-align : center;text-shadow: 3px 2px 6px rgba(0,0,0,0.62);">{{selectedVoucher.brand}}</text>
+            <text style="margin-top : 8rpx; font-size : 28rpx; color: white; z-index: 2; font-weight : 400; font-family :Arial, Helvetica, sans-serif; text-align : center; text-shadow: 3px 2px 6px rgba(0,0,0,0.62);">{{selectedVoucher.discount}}</text>
+          </view>
+        </view>
+      </view>
+      <button class="button" size="default" type="primary" style="width : 100%; display : grid ; place-content : center; border-radius : 1000rpx; font-family :Arial, Helvetica, sans-serif; font-weight : 700;  background-color : #b3441b;  border-style : none" >Lihat Voucher</button>
+      <button onTap="onCloseModal" class="button" size="default" type="primary" style="width : 100%; display : grid ; place-content : center; border-radius : 1000rpx; font-family :Arial, Helvetica, sans-serif; font-weight : 700; background-color : #f76c38;  border-style : none" >Main Lagi</button>
+
+    </view>
+  </view>
+
+  <view a:if="{{ !firstLoadFlag }}" style="width : 100%; height: 100%; background-color : rgba(0,0,0, 0.3); position : absolute; display : grid; place-content : center">
+    <view style="display : flex; flex-direction: column; justify-content : center; align-items : center; position : relative; top : -100rpx">
+      <text style="font-size : 32rpx; color: white; z-index: 2; font-weight : 500;  font-family :Arial, Helvetica, sans-serif; ">Shake to random the ball</text>
+      <image mode="widthFix" src="../../icons/shake phone.svg" style="width : 50%" />
+    </view>
+
   </view>
 <view>
